@@ -1,0 +1,9 @@
+1.Sehiflerin linkleri duzelsin
+2.Ana Sehiflerin
+3.Forget PWD
+4.Prod detail
+5.Checkout
+6.Cedvel bayi listesi
+7.Order Tracktion
+8.Product list sort
+9.Add basket funskiyasina quantity getirmek(shop sehifesinde duzlis)
