@@ -12,16 +12,20 @@
 # from products.models import Product
 # from .tokens import account_activation_token
 import json
-from django.http import JsonResponse, HttpResponse,Http404
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
+from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
-from product.models import Product
-from .models import Basket , BasketItem
 
+from .models import Basket, BasketItem
+from .tokens import account_activation_token
+from product.models import Product
 
 User = get_user_model()
 
@@ -31,23 +35,28 @@ User = get_user_model()
 def login_user(request):
     if request.user.is_authenticated:
         return redirect(reverse_lazy('core:home'))
-    else:
-        if request.method == "POST":
-            data = json.loads(request.body.decode("utf-8"))
-            email = data['email']
-            password = data['password']
-            user = User.objects.filter(email=email)
-            if user.exists():
-                user = user.first()
-                if authenticate(request, username=user.username, password=password) is None:
-                    return JsonResponse({"status": "fail", "message": "Geçersiz kullanıcı adı veya şifre"}, status=401)
-                login(request, user)
-                return JsonResponse({"status": "success", "message": "Giriş başarılı"})
-            else:
-                return JsonResponse({"status": "fail", "message": "Geçersiz kullanıcı adı veya şifre"}, status=401)
-           
-          
-        return render(request,'login.html',  context={'error':12})
+
+    if request.method == "POST":
+        data = json.loads(request.body.decode("utf-8"))
+        email = data['email']
+        password = data['password']
+        
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return JsonResponse({"status": "fail", "message": "İstifadəçi tapılmadı"}, status=401)
+
+        user_auth = authenticate(request, username=user.username, password=password)
+
+        if user_auth is not None:
+            login(request, user_auth)
+            return JsonResponse({"status": "success", "message": "Giriş uğurludur"})
+        else:
+            return JsonResponse({"status": "fail", "message": "Şifrə yanlışdır"}, status=401)
+
+    return render(request, 'login.html')
+
+
 
 @login_required()
 def logout_user(request):
@@ -162,3 +171,56 @@ def update_basket(request, id):
             item.delete()
             
     return JsonResponse({'status': 'success', 'message': 'Added'},status=200)
+
+
+def forget_password(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        email = data.get('email')
+        user = User.objects.filter(email=email).first()
+
+        if user:
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = account_activation_token.make_token(user)
+            reset_link = request.build_absolute_uri(
+                reverse('account:reset_password', kwargs={'uidb64': uid, 'token': token})
+            )
+            html = render_to_string('email/reset_password_email.html', {
+                'user': user,
+                'reset_link': reset_link
+            })
+            send_mail(
+                subject="Password Reset",
+                message="",
+                from_email=None,
+                recipient_list=[user.email],
+                html_message=html
+            )
+            return JsonResponse({'status': 'ok', 'message': 'Reset link sent'})
+        return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+
+    return render(request, 'forget_password.html')
+
+
+# ------------------- RESET PASSWORD -------------------
+
+def reset_password(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (User.DoesNotExist, ValueError):
+        user = None
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        password = data.get('password')
+
+        if user and account_activation_token.check_token(user, token):
+            user.set_password(password)
+            user.save()
+            return JsonResponse({'status': 'ok', 'message': 'Password reset successful'})
+        return JsonResponse({'status': 'fail', 'message': 'Invalid or expired link'}, status=400)
+
+    return render(request, 'reset_password.html', {
+        'validlink': user and account_activation_token.check_token(user, token)
+    })

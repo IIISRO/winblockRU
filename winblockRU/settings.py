@@ -24,8 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rxkj2jrunw(u=cb8pe8@+&%*0el+rlp3@oie_e!9fzk03k8t62'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if os.environ.get('DEBUG') else True 
-# DEBUG=True
+# DEBUG = False if os.environ.get('DEBUG') else True 
+DEBUG=True
 
 
 ALLOWED_HOSTS = ['*']
@@ -109,8 +109,10 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+            
             'context_processors': [
                 'django.template.context_processors.request',
+                'product.context_processors.product_categories',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -124,25 +126,25 @@ WSGI_APPLICATION = 'winblockRU.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB','winblockruDB'),
-        'USER': os.environ.get('POSTGRES_USER','winblockru'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD','de$?dwd33!wewedw23@o8'),
-        # 'HOST':'localhost',
-        'HOST': os.environ.get('POSTGRES_HOST','localhost'),
-        'PORT': os.environ.get('POSTGRES_PORT','5432'),
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',  # This stores the DB in the root folder of your project
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_DB','winblockruDB'),
+#         'USER': os.environ.get('POSTGRES_USER','winblockru'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD','de$?dwd33!wewedw23@o8'),
+#         # 'HOST':'localhost',
+#         'HOST': os.environ.get('POSTGRES_HOST','localhost'),
+#         'PORT': os.environ.get('POSTGRES_PORT','5432'),
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # This stores the DB in the root folder of your project
+    }
+}
 
 
 
@@ -214,10 +216,10 @@ LOGIN_URL = reverse_lazy('account:login')
 # LOGIN_REDIRECT_URL = reverse_lazy('account:profile')
 # LOGOUT_URL = reverse_lazy('account:logout')
 # LOGOUT_REDIRECT_URL = reverse_lazy('core:home')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'storebyglasstech@gmail.com'
+EMAIL_HOST_PASSWORD = 'ksxdqywvxgdurjgi'
 
-# EMAIL_BACKEND = 'storebyglasstech.email_backend.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_USE_TLS = True
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'storebyglasstech@gmail.com'
-# EMAIL_HOST_PASSWORD = 'ksxdqywvxgdurjgi'

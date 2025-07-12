@@ -14,6 +14,8 @@ urlpatterns = [
     # path('profile/', Profile.as_view(), name='profile'),
     # path('register/', Signin.as_view(), name='signin'),
     path('logout/', logout_user, name='logout'),
+     path('forget-password/', forget_password, name='forget_password'),
+    path('reset/<uidb64>/<token>/', reset_password, name='reset_password'),
 
     
 
