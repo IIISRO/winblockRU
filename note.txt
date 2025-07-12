@@ -1,5 +1,5 @@
-1.Sehiflerin linkleri duzelsin
-2.Ana Sehiflerin
+1.Sehiflerin linkleri duzelsin +
+2.Ana Sehiflerin +
 3.Forget PWD
 4.Prod detail
 5.Checkout

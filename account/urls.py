@@ -10,10 +10,10 @@ urlpatterns = [
     path('cart/', cart, name='cart'),
 
     re_path(r'^addbasket/(?P<prodid>-?\d+)/(?P<colorid>-?\d+)/(?P<gridid>-?\d+)/$', add_basket, name='addbasket'),
-    path('update_basket/<int:id>/', update_basket, name='update_basket')
+    path('update_basket/<int:id>/', update_basket, name='update_basket'),
     # path('profile/', Profile.as_view(), name='profile'),
     # path('register/', Signin.as_view(), name='signin'),
-    # path('logout/', logout_user, name='logout'),
+    path('logout/', logout_user, name='logout'),
 
     
 

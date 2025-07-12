@@ -23,7 +23,8 @@
 
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -37,43 +38,51 @@
         <div class="row bg-secondary py-1 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center h-100">
-                    <a class="text-body mr-3" href="">About</a>
-                    <a class="text-body mr-3" href="">Contact</a>
-                    <a class="text-body mr-3" href="">Help</a>
-                    <a class="text-body mr-3" href="">FAQs</a>
+                    <!-- <a class="text-body mr-3" href="{% url 'core:about' %}">About</a> -->
+                    <a class="text-body mr-3" href="{% url 'core:contact' %}">Contact</a>
+                    <!-- <a class="text-body mr-3" href="">Help</a>
+                    <a class="text-body mr-3" href="">FAQs</a> -->
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">Sign in</button>
-                            <button class="dropdown-item" type="button">Sign up</button>
-                        </div>
+                   <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        {% if user.is_authenticated %}
+                        <form method="POST" action="{% url 'account:logout' %}">
+                            {% csrf_token %}
+                            <button class="dropdown-item" type="submit">Logout</button>
+                        </form>
+                        {% else %}
+                        <a href="{% url 'account:login' %}" class="dropdown-item">Sign in</a>
+                        <a href="{% url 'account:register' %}" class="dropdown-item">Sign up</a>
+                        {% endif %}
                     </div>
-                    <div class="btn-group mx-2">
+                    </div>
+
+                    <!-- <div class="btn-group mx-2">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
                         <div class="dropdown-menu dropdown-menu-right">
                             <button class="dropdown-item" type="button">EUR</button>
                             <button class="dropdown-item" type="button">GBP</button>
                             <button class="dropdown-item" type="button">CAD</button>
                         </div>
-                    </div>
-                    <div class="btn-group">
+                    </div> -->
+                    <!-- <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">EN</button>
                         <div class="dropdown-menu dropdown-menu-right">
                             <button class="dropdown-item" type="button">FR</button>
                             <button class="dropdown-item" type="button">AR</button>
                             <button class="dropdown-item" type="button">RU</button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="d-inline-flex align-items-center d-block d-lg-none">
-                    <a href="" class="btn px-0 ml-2">
+                    <!-- <a href="" class="btn px-0 ml-2">
                         <i class="fas fa-heart text-dark"></i>
                         <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
+                    </a> -->
                     <a href="" class="btn px-0 ml-2">
                         <i class="fas fa-shopping-cart text-dark"></i>
                         <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
@@ -81,14 +90,14 @@
                 </div>
             </div>
         </div>
-        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex justify-content-between">
             <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
+        <a href="{% url 'core:home' %}" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">Win</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Block</span>
                 </a>
             </div>
-            <div class="col-lg-4 col-6 text-left">
+            <!-- <div class="col-lg-4 col-6 text-left">
                 <form action="">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for products">
@@ -99,7 +108,7 @@
                         </div>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <div class="col-lg-4 col-6 text-right">
                 <p class="m-0">Customer Service</p>
                 <h5 class="m-0">+7 012 345 6789</h5>
@@ -150,17 +159,18 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link active">Домашняя Страница</a>
-                            <a href="shop.html" class="nav-item nav-link">Продукты</a>
-                            <a href="detail.html" class="nav-item nav-link">Зарубежные дилеры</a>
-                            <a href="detail.html" class="nav-item nav-link">Видео сборки</a>
-                            <a href="contact.html" class="nav-item nav-link">Контакт</a>
+                         <a href="{% url 'core:home' %}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Домашняя Страница</a>
+                        <a href="{% url 'product:shop' %}" class="nav-item nav-link {% if request.path == '/shop/' %}active{% endif %}">Продукты</a>
+                        <a href="detail.html" class="nav-item nav-link {% if request.path == '/detail.html' %}active{% endif %}">Зарубежные дилеры</a>
+                        <a href="detail.html" class="nav-item nav-link {% if request.path == '/detail.html' %}active{% endif %}">Видео сборки</a>
+                        <a href="{% url 'core:contact' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Контакт</a>
+
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                            <a href="" class="btn px-0">
+                            <!-- <a href="" class="btn px-0">
                                 <i class="fas fa-heart text-primary"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
-                            </a>
+                            </a> -->
                             <a href="" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
@@ -250,7 +260,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
+                        <!-- <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
                         <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
                         <form action="">
                             <div class="input-group">
@@ -259,8 +269,8 @@
                                     <button class="btn btn-primary">Sign Up</button>
                                 </div>
                             </div>
-                        </form>
-                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
+                        </form> -->
+                        <h6 class="text-secondary text-uppercase  mb-3">Follow Us</h6>
                         <div class="d-flex">
                             <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
                             <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
@@ -295,8 +305,33 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <!-- <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script> -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: false,
+       autoplay:true,
+       dots:true,
+    autoplayTimeout:3000,
+    autoplayHoverPause:true,
+      responsive:{
+        0: {
+          items: 2
+        },
+        600: {
+          items: 3
+        },
+        1000: {
+          items: 6
+        }
+      }
+    });
+  });
+</script>
 
 
     {% block js %}
