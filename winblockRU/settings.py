@@ -114,6 +114,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.request',
                 'product.context_processors.product_categories',
+                'account.context_processors.cart_count',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],

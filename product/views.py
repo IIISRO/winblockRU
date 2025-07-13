@@ -9,13 +9,17 @@ class ProductDetail(View):
         product = get_object_or_404(Product, slug=slug)
         colors = product.color.all()
         grids = product.grid.all()
-
+        latest_products = Product.objects.all().order_by('-created_at')[:8]  # Show latest 8
+        context = {
+            
+        }
         context = {
             'product': product,
             'colors': colors,
             'grids': grids,
             'default_color': colors[0] if colors else None,
-            'default_grid': grids[0] if grids else None
+            'default_grid': grids[0] if grids else None,
+            'latest_products': latest_products
         }
         return render(request, 'detail.html', context)
 

@@ -200,7 +200,7 @@ def update_basket(request, id):
         if item.quantity == 0:
             item.delete()
             
-    return JsonResponse({'status': 'success', 'message': 'Added'},status=200)
+    return JsonResponse({'status': 'success', 'message': 'Added', 'cart_count': BasketItem.objects.filter(basket__user=request.user).count()},status=200)
 
 
 def forget_password(request):
