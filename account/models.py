@@ -42,3 +42,5 @@ class BasketItem(AbstractModel):
     @property
     def total_price(self):
         return self.product.price * self.quantity
+    
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 5px; }
+    h2 { color: #2c3e50;font-size: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #3498db; color: white; }
+    .total { font-weight: bold; }
+    .footer { margin-top: 30px; font-size: 12px; color: #888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Order Receipt</h2>
+    <p style="font-size: 18px;">Thank you for your order!</p>
+    <p><strong>Order Number:</strong> {{ order_number }}</p>
+    <p><strong>Name:</strong> {{ full_name }}</p>
+    <p><strong>Address:</strong> {{ address }}, {{ city }}</p>
+    <p><strong>Phone:</strong> {{ phone }}</p>
+
+    <h3>Order Details:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price (₼)</th>
+          <th>Total (₼)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in products %}
+        <tr>
+          <td>{{ item.product.title }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.product.price }}</td>
+          <td>{{ item.total_price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p class="total">Subtotal: {{ subtotal }} ₼</p>
+    <p class="total">Shipping: {{ shipping }} ₼</p>
+    <p class="total">Total: {{ total }} ₼</p>
+
+    <p>If you have any questions, feel free to contact us.</p>
+    <div class="footer">© {{ current_year }} Your Company Name. All rights reserved.</div>
+  </div>
+</body>
+</html>

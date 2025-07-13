@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import View
 from product.models import Product
 from django.conf import settings
 import json
 import os
-
+from .models import Contact
+from django.contrib import messages
 
 # Create your views here.
 class Home(View):
@@ -40,8 +41,26 @@ def dealer_list(request):
     }
     return render(request, 'dealer_list.html', context) # Render to a new template name
     
-class Contact(View):
-    def get(self, request):
-        context = {
-        }
-        return render(request, 'contact.html', context)
+
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        if name and email and subject and message:
+            Contact.objects.create(
+                name=name,
+                email=email,
+                subject=subject,
+                message=message
+            )
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('core:contact')
+        else:
+            messages.error(request, "Please fill in all fields.")
+
+    return render(request, 'contact.html')

@@ -25,7 +25,7 @@ from django.contrib.auth import get_user_model
 
 from .models import Basket, BasketItem
 from .tokens import account_activation_token
-from product.models import Product
+from product.models import Product,Color,Grid
 
 User = get_user_model()
 
@@ -104,52 +104,82 @@ def register(request):
 
 @login_required()
 def add_basket(request, prodid, colorid, gridid):
-    if request.method  == "POST":
-        if Basket.objects.filter(user=request.user).exists():
-            basket =  Basket.objects.get(user = request.user)
-        else:
-            basket = Basket.objects.create(user = request.user)
+    if request.method == "POST":
+        try:
+            quantity = int(request.POST.get("quantity", 1))
+        except (ValueError, TypeError):
+            return JsonResponse({'status': 'error', 'message': 'Invalid quantity'}, status=400)
 
+        basket, _ = Basket.objects.get_or_create(user=request.user)
+
+        # Validate product
         prodid = int(prodid)
-        gridid = int(gridid)
-        colorid = int (colorid)
+        product = get_object_or_404(Product, id=prodid)
 
-        if colorid < 0:
-            colorid = None
-        if gridid < 0:
-            gridid = None
+        # Handle color and grid as optional
+        color = None
+        grid = None
+        try:
+            if int(colorid) >= 0:
+                color = get_object_or_404(Color, id=colorid)
+        except (ValueError, TypeError):
+            pass
 
-        if BasketItem.objects.filter(basket=basket, product_id = prodid, color_id = colorid, grid_id = gridid).exists():
-            item = BasketItem.objects.get(basket=basket, product_id = prodid, color_id = colorid, grid_id = gridid)
-            item.quantity += 1
+        try:
+            if int(gridid) >= 0:
+                grid = get_object_or_404(Grid, id=gridid)
+        except (ValueError, TypeError):
+            pass
+
+        # Get or create basket item
+        item, created = BasketItem.objects.get_or_create(
+            basket=basket,
+            product=product,
+            color=color,
+            grid=grid,
+            defaults={"quantity": quantity}
+        )
+
+        if not created:
+            item.quantity += quantity
             item.save()
-        else:
-            BasketItem.objects.create(
-                basket = basket,
-                product_id = prodid,
-                color_id = colorid,
-                grid_id = gridid
-                )
-        
 
-        return JsonResponse({'status': 'success', 'message': 'Added'},status=200)
+        return JsonResponse({'status': 'success', 'message': 'Added'}, status=200)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+
+# @login_required()
+# def cart(request):
+#     if not request.user.is_authenticated:
+#         return redirect('account:login')
+    
+#     products = []
+#     if Basket.objects.filter(user=request.user).exists():
+
+#         products = Basket.objects.get(user=request.user).basketitem_set.all()
+#         for product in products:
+#             print(product.product)
+#     context = {
+#         'products' : products
+#     }
+#     return render(request, 'cart.html', context)
 
 @login_required()
 def cart(request):
-    if not request.user.is_authenticated:
-        return redirect('account:login')
-    
-    products = []
-    if Basket.objects.filter(user=request.user).exists():
+    basket_items = BasketItem.objects.filter(basket__user=request.user)
 
-        products = Basket.objects.get(user=request.user).basketitem_set.all()
-        for product in products:
-            print(product.product)
+    subtotal = sum(item.total_price for item in basket_items)
+    shipping = 10  # You can make this dynamic if needed
+    total = subtotal + shipping
+
     context = {
-        'products' : products
+        'products': basket_items,
+        'subtotal': subtotal,
+        'shipping': shipping,
+        'total': total
     }
     return render(request, 'cart.html', context)
-
 
 
 

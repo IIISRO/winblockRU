@@ -6,11 +6,19 @@ from .models import *
 # Create your views here.
 class ProductDetail(View):
     def get(self, request, slug):
-        product = get_object_or_404(Product, slug = slug)
+        product = get_object_or_404(Product, slug=slug)
+        colors = product.color.all()
+        grids = product.grid.all()
+
         context = {
-            'product' : product
+            'product': product,
+            'colors': colors,
+            'grids': grids,
+            'default_color': colors[0] if colors else None,
+            'default_grid': grids[0] if grids else None
         }
         return render(request, 'detail.html', context)
+
     
 class ShopPage(View):
     def get(self, request):

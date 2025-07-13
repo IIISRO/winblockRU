@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="card mx-auto" style="max-width: 700px;">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Order Receipt</h3>
+      <small class="text-dark font-weight-medium mt-3 d-block" style="font-size: 18px;">Thank you for your purchase!</small>
+    </div>
+    <div class="card-body">
+      <p><strong>Order Number:</strong> {{ summary.order_number }}</p>
+      <p><strong>Name:</strong> {{ summary.full_name }}</p>
+      <p><strong>Address:</strong> {{ summary.address }}, {{ summary.city }}</p>
+      <p><strong>Phone:</strong> {{ summary.phone }}</p>
+      <hr>
+      <h5>Order Details:</h5>
+     <table class="table table-warning">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Price (₼)</th>
+      <th>Total (₼)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in summary.products %}
+    <tr>
+      <td>{{ item.product_title }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.price }}</td>
+      <td>{{ item.total_price }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No products found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+      <div class="text-right">
+        <h6 style="font-weight: normal;">Subtotal: {{ summary.subtotal }} ₼</h6>
+        <h6 style="font-weight: normal;">Shipping: {{ summary.shipping }} ₼</h6>
+        <h4>Total: {{ summary.total }} ₼</h4>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
