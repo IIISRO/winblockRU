@@ -4,26 +4,24 @@
 {% load static %}
 
 {% block content %}
- <!-- Breadcrumb Start -->
-    <div class="container-fluid">
-        <div class="row px-xl-5">
-            <div class="col-12">
-                <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <span class="breadcrumb-item active">Dealers List</span>
-                </nav>
-            </div>
-        </div>
+<div class="container-fluid">
+  <div class="row px-xl-5">
+    <div class="col-12">
+      <nav class="breadcrumb bg-light mb-30">
+        <a class="breadcrumb-item text-dark" href="#">Главная</a>
+        <span class="breadcrumb-item active">Список дилеров</span>
+      </nav>
     </div>
-    <!-- Breadcrumb End -->
+  </div>
+</div>
 <div class="container-fluid pt-2 pb-5 px-5">
   <div class="text-center my-4">
     <h1 class="display-5 fw-bold text-uppercase" style="color: #000000;">
       {{ page_title }}
     </h1>
     <p class="lead py-3" style="font-size: 20px;color: #000000;">
-      WinBlock® products are new in the sector and dealerships continue to be given.<br>
-      You can contact our company for a dealership application.
+      Продукция WinBlock® новая в секторе, и дилерские места продолжают предоставляться.<br>
+      Вы можете связаться с нашей компанией для подачи заявки на дилерство.
     </p>
   </div>
 
@@ -31,27 +29,33 @@
     <table class="table" style="border-collapse: collapse; width: 100%;">
       <thead>
         <tr>
-          <th colspan="4" class="text-center" style="background-color: #c4d79b; border: 1px solid black; height: 106px; vertical-align: middle;">
+          <th colspan="4" class="text-center"
+            style="background-color: #c4d79b; border: 1px solid black; height: 106px; vertical-align: middle;">
             <span style="font-size: 23px;  font-family: İnherit;">
-              WINBLOCK DEALER LIST (ABROAD)<br>&nbsp; BAYİ LİSTESİ (YURT DIŞI)
+              СПИСОК ДИЛЕРОВ WINBLOCK (ЗА РУБЕЖОМ)<br>&nbsp; СПИСОК ДИЛЕРОВ (ЗАРУБЕЖНЫЙ)
             </span>
           </th>
         </tr>
         <tr>
-          <th class="text-center" style="background-color: #c4d79b; border: 1px solid black; height: 45px; vertical-align: middle;">
-            <span style="font-size: 23px;  font-family: İnherit;">COUNTRY</span>
+          <th class="text-center"
+            style="background-color: #c4d79b; border: 1px solid black; height: 45px; vertical-align: middle;">
+            <span style="font-size: 23px;  font-family: İnherit;">СТРАНА</span>
           </th>
           <th class="text-center" style="background-color: #c4d79b; border: 1px solid black; vertical-align: middle;">
             <span style="font-size: 23px;  font-family: İnherit;">&nbsp;ÜLKE</span>
           </th>
           <th class="text-center" style="background-color: #c4d79b; border: 1px solid black; vertical-align: middle;">
             <span style="font-size: 23px;  font-family: İnherit;">
-              <img alt="" src="https://static.ticimax.cloud/cdn-cgi/image/width=184,quality=99/30148//uploads/editoruploads/png-transparent-logo-instagram-text-logo.png" style="width: 15px; height: 15px;">&nbsp;Instagram &amp; web
+              <img alt=""
+                src="https://static.ticimax.cloud/cdn-cgi/image/width=184,quality=99/30148//uploads/editoruploads/png-transparent-logo-instagram-text-logo.png"
+                style="width: 15px; height: 15px;">&nbsp;Instagram &amp; сайт
             </span>
           </th>
           <th class="text-center" style="background-color: #c4d79b; border: 1px solid black; vertical-align: middle;">
             <span style="font-size: 23px;  font-family: İnherit;">
-              <img alt="" src="https://static.ticimax.cloud/cdn-cgi/image/width=63,quality=99/30148//uploads/editoruploads/png-clipart-phone-phone-photoroom.png" style="width: 28px; height: 16px;">Tel&nbsp;
+              <img alt=""
+                src="https://static.ticimax.cloud/cdn-cgi/image/width=63,quality=99/30148//uploads/editoruploads/png-clipart-phone-phone-photoroom.png"
+                style="width: 28px; height: 16px;">Телефон&nbsp;
             </span>
           </th>
         </tr>
@@ -59,30 +63,34 @@
       <tbody>
         {% for dealer in dealers %}
         <tr>
-          <td class="text-center" style="background-color: #ffff99; border: 1px solid black; height: 66px; vertical-align: middle; white-space: nowrap;">
+          <td class="text-center"
+            style="background-color: #ffff99; border: 1px solid black; height: 66px; vertical-align: middle; white-space: nowrap;">
             <span style="font-size: 23px; color: black;  font-family: Arial, sans-serif;">
               {{ dealer.country_en }}
             </span>
           </td>
-          <td class="text-center" style="background-color: #ffff99; border: 1px solid black; vertical-align: middle; white-space: nowrap;">
+          <td class="text-center"
+            style="background-color: #ffff99; border: 1px solid black; vertical-align: middle; white-space: nowrap;">
             <span style="font-size: 23px; color: black; font-family: Arial, sans-serif;">
               {{ dealer.country_az }}
             </span>
           </td>
-          <td class="text-center" style="background-color: #fcd5b4; border: 1px solid black; vertical-align: middle; white-space: nowrap;">
+          <td class="text-center"
+            style="background-color: #fcd5b4; border: 1px solid black; vertical-align: middle; white-space: nowrap;">
             <span style="font-size: 23px; color: black; font-family: Calibri, sans-serif;">
               {% if dealer.social_web and dealer.social_web|startswith:'http' %}
-                <a href="{{ dealer.social_web }}" target="_blank" style="color: black; text-decoration: none;">
-                  {{ dealer.social_web|cut:"http://"|cut:"https://" }}
-                </a>
+              <a href="{{ dealer.social_web }}" target="_blank" style="color: black; text-decoration: none;">
+                {{ dealer.social_web|cut:"http://"|cut:"https://" }}
+              </a>
               {% elif dealer.social_web %}
-                {{ dealer.social_web }}
+              {{ dealer.social_web }}
               {% else %}
-                -
+              -
               {% endif %}
             </span>
           </td>
-          <td class="text-center" style="background-color: #fcd5b4; border: 1px solid black; vertical-align: middle; white-space: normal;">
+          <td class="text-center"
+            style="background-color: #fcd5b4; border: 1px solid black; vertical-align: middle; white-space: normal;">
             <span style="font-size: 23px;  color: black; font-family: Calibri, sans-serif;">
               {{ dealer.phone|default:"-" }}
             </span>
@@ -94,6 +102,4 @@
   </div>
 </div>
 
-{# Removed the original JavaScript for recommended products as it's not directly related to the dealer list data #}
-{# If you still need this functionality, you can re-add it or make it more modular #}
 {% endblock content %}

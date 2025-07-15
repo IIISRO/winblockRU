@@ -4,16 +4,17 @@
 
   <div class="card w-100 mb-4" style="max-width: 600px;">
     <div class="card-header text-white" style="background-color: #3D464D;">
-      <h5 class="mb-0 text-light">Track Your Order</h5>
+      <h5 class="mb-0 text-light">Отслеживание заказа</h5>
     </div>
     <div class="card-body">
       <form method="POST">
         {% csrf_token %}
         <div class="form-group">
-          <label for="order_number">Enter Order Number</label>
-          <input type="text" name="order_number" id="order_number" class="form-control" placeholder="e.g. GB567AXE" required>
+          <label for="order_number">Введите номер заказа</label>
+          <input type="text" name="order_number" id="order_number" class="form-control" placeholder="например: GB567AXE"
+            required>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Track</button>
+        <button type="submit" class="btn btn-primary btn-block">Отследить</button>
       </form>
     </div>
   </div>
@@ -22,33 +23,32 @@
   <div class="card shadow w-100" style="max-width: 600px;">
     <div class="card-header text-white" style="background-color: #f6b93b;">
       <div class="d-flex justify-content-between">
-        <div>Order Tracking – <strong>{{ order_number }}</strong></div>
-        <div><strong>Expected:</strong> {{ expected }}</div>
+        <div>Статус заказа – <strong>{{ order_number }}</strong></div>
+        <div><strong>Ожидается:</strong> {{ expected }}</div>
       </div>
-      <div><small><strong>Shipped via:</strong> UPS</small></div>
     </div>
 
     <div class="card-body">
       <div class="track-bar">
         <div class="step {% if stage >= 1 %}active{% endif %}">
           <div class="icon"><i class="fa fa-shopping-cart"></i></div>
-          <p>Order Placed</p>
+          <p>Заказ оформлен</p>
         </div>
         <div class="step {% if stage >= 2 %}active{% endif %}">
           <div class="icon"><i class="fa fa-truck"></i></div>
-          <p>In Transit</p>
+          <p>В пути</p>
         </div>
         <div class="step {% if stage == 3 %}active{% endif %}">
           <div class="icon"><i class="fa fa-check"></i></div>
-          <p>Completed</p>
+          <p>Доставлено</p>
         </div>
       </div>
 
       <p class="text-center mt-4">
-        <strong>Status:</strong>
-        {% if stage == 1 %} Order Placed
-        {% elif stage == 2 %} In Transit
-        {% elif stage == 3 %} Completed
+        <strong>Статус:</strong>
+        {% if stage == 1 %} Заказ оформлен
+        {% elif stage == 2 %} В пути
+        {% elif stage == 3 %} Доставлено
         {% endif %}
       </p>
     </div>
@@ -57,54 +57,54 @@
 </div>
 
 <style>
-.track-bar {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  padding: 40px 20px 20px;
-}
+  .track-bar {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 40px 20px 20px;
+  }
 
-.track-bar::before {
-  content: '';
-  position: absolute;
-  top: 65px;
-  left: 10%;
-  right: 10%;
-  height: 4px;
-  background: #ccc;
-  z-index: 1;
-}
+  .track-bar::before {
+    content: '';
+    position: absolute;
+    top: 65px;
+    left: 10%;
+    right: 10%;
+    height: 4px;
+    background: #ccc;
+    z-index: 1;
+  }
 
-.step {
-  text-align: center;
-  position: relative;
-  z-index: 2;
-  width: 33.3%;
-}
+  .step {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    width: 33.3%;
+  }
 
-.step .icon {
-  width: 40px;
-  height: 40px;
-  margin: auto;
-  border-radius: 50%;
-  background: #ccc;
-  color: white;
-  font-size: 18px;
-  line-height: 40px;
-}
+  .step .icon {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    border-radius: 50%;
+    background: #ccc;
+    color: white;
+    font-size: 18px;
+    line-height: 40px;
+  }
 
-.step.active .icon {
-  background: #f6b93b;
-}
+  .step.active .icon {
+    background: #f6b93b;
+  }
 
-.step:last-child.active .icon {
-  background: #2ecc71;
-}
+  .step:last-child.active .icon {
+    background: #2ecc71;
+  }
 
-.step p {
-  margin-top: 10px;
-  font-weight: 500;
-  font-size: 14px;
-}
+  .step p {
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 14px;
+  }
 </style>
 {% endblock %}

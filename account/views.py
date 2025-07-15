@@ -1,16 +1,3 @@
-# from django.contrib import messages
-# from .helpers import send_forget_pwd,send_activate_link
-# from django.template.loader import get_template
-# from django.utils.translation import gettext_lazy as _
-# import uuid
-# from social_django.models import UserSocialAuth
-# from django.utils.http import urlsafe_base64_decode
-# from django.contrib.sites.shortcuts import get_current_site
-# from django.utils.encoding import force_bytes
-# from django.utils.http import urlsafe_base64_encode
-# from django.utils.encoding import force_str    
-# from products.models import Product
-# from .tokens import account_activation_token
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -22,15 +9,11 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.contrib.auth import get_user_model
-
 from .models import Basket, BasketItem
 from .tokens import account_activation_token
-from product.models import Product,Color,Grid
+from product.models import Product, Color, Grid
 
 User = get_user_model()
-
-# Create your views here.
-
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -40,22 +23,21 @@ def login_user(request):
         data = json.loads(request.body.decode("utf-8"))
         email = data['email']
         password = data['password']
-        
+
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return JsonResponse({"status": "fail", "message": "İstifadəçi tapılmadı"}, status=401)
+            return JsonResponse({"status": "fail", "message": "Пользователь не найден"}, status=401)
 
         user_auth = authenticate(request, username=user.username, password=password)
 
         if user_auth is not None:
             login(request, user_auth)
-            return JsonResponse({"status": "success", "message": "Giriş uğurludur"})
+            return JsonResponse({"status": "success", "message": "Вход выполнен успешно"})
         else:
-            return JsonResponse({"status": "fail", "message": "Şifrə yanlışdır"}, status=401)
+            return JsonResponse({"status": "fail", "message": "Неверный пароль"}, status=401)
 
     return render(request, 'login.html')
-
 
 
 @login_required()
@@ -63,114 +45,86 @@ def logout_user(request):
     logout(request)
     return redirect(reverse_lazy('core:home'))
 
-    
+
 def register(request):
-        if request.user.is_authenticated:
-            return redirect(reverse_lazy("core:home"))
+    if request.user.is_authenticated:
+        return redirect(reverse_lazy("core:home"))
 
-        if request.method == 'POST':
-            data = json.loads(request.body.decode("utf-8"))
+    if request.method == 'POST':
+        data = json.loads(request.body.decode("utf-8"))
 
-            first_name = data['firstname']
-            last_name = data['lastname']
-            email = data['email']
-            password = data['password']
-            number = data['phone']
-            postal = data['post']
-            city = data['city']
-            address = data['address']
+        first_name = data['firstname']
+        last_name = data['lastname']
+        email = data['email']
+        password = data['password']
+        number = data['phone']
+        postal = data['post']
+        city = data['city']
+        address = data['address']
 
-            if not User.objects.filter(email = email).exists():
-                user = User.objects.create(
-                    username = number.replace('+7','').replace(' ', ''),
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    number = number,
-                    postal = postal,
-                    cities = city,
-                    address = address
-                    )
-                user.set_password(password)
-                user.save()
-                return JsonResponse({'status': 'success', 'message': 'Registred user!'},status=200)
+        if not User.objects.filter(email=email).exists():
+            user = User.objects.create(
+                username=number.replace('+7', '').replace(' ', ''),
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                number=number,
+                postal=postal,
+                cities=city,
+                address=address
+            )
+            user.set_password(password)
+            user.save()
+            return JsonResponse({'status': 'success', 'message': 'Пользователь зарегистрирован!'}, status=200)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Пользователь уже существует!'}, status=400)
 
-
-            else:     
-                return JsonResponse({'status': 'error', 'message': 'Exists user!'},status=400)
-        
-        return render(request,'register.html')
+    return render(request, 'register.html')
 
 
 @login_required()
 def add_basket(request, prodid, colorid, gridid):
     if request.method == "POST":
         try:
-            quantity = int(request.POST.get("quantity", 1))
-        except (ValueError, TypeError):
-            return JsonResponse({'status': 'error', 'message': 'Invalid quantity'}, status=400)
+            quantity = 1
+            basket, _ = Basket.objects.get_or_create(user=request.user)
 
-        basket, _ = Basket.objects.get_or_create(user=request.user)
+            product = get_object_or_404(Product, id=prodid)
 
-        # Validate product
-        prodid = int(prodid)
-        product = get_object_or_404(Product, id=prodid)
+            color = None
+            if str(colorid).isdigit() and int(colorid) >= 0:
+                color = Color.objects.filter(id=colorid).first()
 
-        # Handle color and grid as optional
-        color = None
-        grid = None
-        try:
-            if int(colorid) >= 0:
-                color = get_object_or_404(Color, id=colorid)
-        except (ValueError, TypeError):
-            pass
+            grid = None
+            if str(gridid).isdigit() and int(gridid) >= 0:
+                grid = Grid.objects.filter(id=gridid).first()
 
-        try:
-            if int(gridid) >= 0:
-                grid = get_object_or_404(Grid, id=gridid)
-        except (ValueError, TypeError):
-            pass
+            item, created = BasketItem.objects.get_or_create(
+                basket=basket,
+                product=product,
+                color=color,
+                grid=grid,
+                defaults={"quantity": quantity}
+            )
 
-        # Get or create basket item
-        item, created = BasketItem.objects.get_or_create(
-            basket=basket,
-            product=product,
-            color=color,
-            grid=grid,
-            defaults={"quantity": quantity}
-        )
+            if not created:
+                item.quantity += quantity
+                item.save()
 
-        if not created:
-            item.quantity += quantity
-            item.save()
+            return JsonResponse({'status': 'success', 'message': 'Добавлено'}, status=200)
 
-        return JsonResponse({'status': 'success', 'message': 'Added'}, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+    return JsonResponse({'status': 'error', 'message': 'Неверный метод запроса'}, status=405)
 
-
-# @login_required()
-# def cart(request):
-#     if not request.user.is_authenticated:
-#         return redirect('account:login')
-    
-#     products = []
-#     if Basket.objects.filter(user=request.user).exists():
-
-#         products = Basket.objects.get(user=request.user).basketitem_set.all()
-#         for product in products:
-#             print(product.product)
-#     context = {
-#         'products' : products
-#     }
-#     return render(request, 'cart.html', context)
 
 @login_required()
 def cart(request):
     basket_items = BasketItem.objects.filter(basket__user=request.user)
 
     subtotal = sum(item.total_price for item in basket_items)
-    shipping = 10  # You can make this dynamic if needed
+    shipping = 10 
     total = subtotal + shipping
 
     context = {
@@ -182,11 +136,10 @@ def cart(request):
     return render(request, 'cart.html', context)
 
 
-
 @login_required
 def update_basket(request, id):
     data = json.loads(request.body.decode("utf-8"))
-    item = BasketItem.objects.get(id = id)
+    item = BasketItem.objects.get(id=id)
 
     if data['action'] == 'delete':
         item.delete()
@@ -199,8 +152,12 @@ def update_basket(request, id):
             item.save()
         if item.quantity == 0:
             item.delete()
-            
-    return JsonResponse({'status': 'success', 'message': 'Added', 'cart_count': BasketItem.objects.filter(basket__user=request.user).count()},status=200)
+
+    return JsonResponse({
+        'status': 'success',
+        'message': 'Обновлено',
+        'cart_count': BasketItem.objects.filter(basket__user=request.user).count()
+    }, status=200)
 
 
 def forget_password(request):
@@ -220,19 +177,17 @@ def forget_password(request):
                 'reset_link': reset_link
             })
             send_mail(
-                subject="Password Reset",
+                subject="Сброс пароля",
                 message="",
                 from_email=None,
                 recipient_list=[user.email],
                 html_message=html
             )
-            return JsonResponse({'status': 'ok', 'message': 'Reset link sent'})
-        return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+            return JsonResponse({'status': 'ok', 'message': 'Ссылка для сброса отправлена'})
+        return JsonResponse({'status': 'error', 'message': 'Пользователь не найден'}, status=404)
 
     return render(request, 'forget_password.html')
 
-
-# ------------------- RESET PASSWORD -------------------
 
 def reset_password(request, uidb64, token):
     try:
@@ -248,8 +203,8 @@ def reset_password(request, uidb64, token):
         if user and account_activation_token.check_token(user, token):
             user.set_password(password)
             user.save()
-            return JsonResponse({'status': 'ok', 'message': 'Password reset successful'})
-        return JsonResponse({'status': 'fail', 'message': 'Invalid or expired link'}, status=400)
+            return JsonResponse({'status': 'ok', 'message': 'Пароль успешно сброшен'})
+        return JsonResponse({'status': 'fail', 'message': 'Неверная или устаревшая ссылка'}, status=400)
 
     return render(request, 'reset_password.html', {
         'validlink': user and account_activation_token.check_token(user, token)

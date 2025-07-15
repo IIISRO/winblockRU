@@ -4,7 +4,6 @@
     {% block style %}
         <style>
 
-
             .card-registration .select-input.form-control[readonly]:not([disabled]) {
             font-size: 1rem;
             line-height: 2.15;
@@ -28,29 +27,26 @@
         </style>
     {% endblock %}
 {% block content %}
-    <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <a class="breadcrumb-item text-dark" href="#">Account</a>
-                    <span class="breadcrumb-item active">Login</span>
+                    <a class="breadcrumb-item text-dark" href="#">Главная</a>
+                    <a class="breadcrumb-item text-dark" href="#">Аккаунт</a>
+                    <span class="breadcrumb-item active">Вход</span>
                 </nav>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb End -->
 
 
-    <!-- Register Start -->
     <section class="vh-100 gradient-custom">
   <div class="container py-5 h-50">
     <div class="row justify-content-center align-items-center h-100">
       <div class="col-12 col-lg-9 col-xl-7">
         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
           <div class="card-body p-4 p-md-5">
-            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Signin Form</h3>
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Форма входа</h3>
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="csrf">
          
               <div class="row">
@@ -58,7 +54,7 @@
 
                   <div data-mdb-input-init class="form-outline">
                     <input required type="email" id="emailAddress" class="form-control form-control-lg" />
-                    <label class="form-label" for="emailAddress">Email</label>
+                    <label class="form-label" for="emailAddress">Электронная почта</label>
                   </div>
 
                 </div>
@@ -69,16 +65,14 @@
                 <div class="col">
                   <div data-mdb-input-init class="form-outline">
                     <input required type="password" id="pass" class="form-control form-control-lg" />
-                    <label class="form-label" for="pass">Password</label>
+                    <label class="form-label" for="pass">Пароль</label>
                   </div>
                 </div>
             </div>
-            <a href="{% url 'account:forget_password' %}">Forget Password</a>
-
-      
+            <a href="{% url 'account:forget_password' %}">Забыли пароль?</a>
 
               <div class="mt-4 pt-2">
-                <button onclick="login()" id="submit">Submit</button>
+                <button onclick="login()" id="submit">Войти</button>
               </div>
 
           </div>
@@ -87,7 +81,6 @@
     </div>
   </div>
 </section>
-    <!-- Register End -->
 
 
 {% endblock %}
@@ -110,7 +103,7 @@ function login() {
                 "Accept": "application/json"
             },
             body: JSON.stringify({ email, password: pass }),
-            credentials: 'include'  // <-- this is key
+            credentials: 'include'  
         })
         .then(res => {
           if(res.ok){
@@ -118,13 +111,10 @@ function login() {
 
           }
           
-            // }
         });
     } else {
-        // $("#exampleModalLong").modal('show');
     }
 }
-
 
 </script>
 {% endblock %}

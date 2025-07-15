@@ -9671,6 +9671,8 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .product-item .product-img img {
+  height: 230px;
+  max-height: 250px;
   transition: .5s;
 }
 

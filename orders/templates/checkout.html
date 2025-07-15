@@ -1,55 +1,55 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container py-5">
-    <h2 class="mb-4">Checkout</h2>
+    <h2 class="mb-4">Оформление заказа</h2>
     <form method="POST">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-6">
-                <h4>Billing Details</h4>
+                <h4>Платежные данные</h4>
                 <div class="form-group">
-                    <label>Full Name</label>
+                    <label>Полное имя</label>
                     <input type="text" name="full_name" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label>Address</label>
+                    <label>Адрес</label>
                     <input type="text" name="address" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label>City</label>
+                    <label>Город</label>
                     <input type="text" name="city" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label>Phone</label>
+                    <label>Телефон</label>
                     <input type="text" name="phone" class="form-control" required>
                 </div>
             </div>
             <div class="col-md-6">
-                <h4>Your Order</h4>
+                <h4>Ваш заказ</h4>
                 <ul class="list-group mb-3">
                     {% for item in products %}
-                        <li class="list-group-item d-flex justify-content-between">
-                            <div>
-                                <h6 class="my-0">{{ item.product.title }}</h6>
-                                <small class="text-muted">Quantity: {{ item.quantity }}</small>
-                            </div>
-                            <span class="text-muted">{{ item.total_price }} ₼</span>
-                        </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <h6 class="my-0">{{ item.product.title }}</h6>
+                            <small class="text-muted">Количество: {{ item.quantity }}</small>
+                        </div>
+                        <span class="text-muted">{{ item.total_price }} ₼</span>
+                    </li>
                     {% endfor %}
                     <li class="list-group-item d-flex justify-content-between">
-                        <span>Subtotal</span>
+                        <span>Промежуточный итог</span>
                         <strong>{{ subtotal }} ₼</strong>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
-                        <span>Shipping</span>
+                        <span>Доставка</span>
                         <strong>{{ shipping }} ₼</strong>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
-                        <span>Total</span>
+                        <span>Итого</span>
                         <strong>{{ total }} ₼</strong>
                     </li>
                 </ul>
-                <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+                <button type="submit" class="btn btn-primary btn-block">Оформить заказ</button>
             </div>
         </div>
     </form>

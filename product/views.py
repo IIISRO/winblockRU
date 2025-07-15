@@ -3,13 +3,12 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import View
 from .models import *
 
-# Create your views here.
 class ProductDetail(View):
     def get(self, request, slug):
         product = get_object_or_404(Product, slug=slug)
         colors = product.color.all()
         grids = product.grid.all()
-        latest_products = Product.objects.all().order_by('-created_at')[:8]  # Show latest 8
+        latest_products = Product.objects.all().order_by('-created_at')[:8]  
         context = {
             
         }
@@ -30,7 +29,7 @@ class ShopPage(View):
         products = Product.objects.all()
 
         if sort == 'latest':
-            products = products.order_by('-created_at')  # or '-id' if you don’t have a timestamp
+            products = products.order_by('-created_at') 
         elif sort == 'price_low':
             products = products.order_by('price')
         elif sort == 'price_high':

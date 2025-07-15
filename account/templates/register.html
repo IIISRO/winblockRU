@@ -4,7 +4,6 @@
     {% block style %}
         <style>
 
-
             .card-registration .select-input.form-control[readonly]:not([disabled]) {
             font-size: 1rem;
             line-height: 2.15;
@@ -28,36 +27,33 @@
         </style>
     {% endblock %}
 {% block content %}
-    <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <a class="breadcrumb-item text-dark" href="#">Account</a>
-                    <span class="breadcrumb-item active">Registration Form</span>
+                    <a class="breadcrumb-item text-dark" href="#">Главная</a>
+                    <a class="breadcrumb-item text-dark" href="#">Аккаунт</a>
+                    <span class="breadcrumb-item active">Форма регистрации</span>
                 </nav>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb End -->
 
 
-    <!-- Register Start -->
     <section class="vh-100 gradient-custom">
   <div class="container py-5 h-100">
     <div class="row justify-content-center align-items-center h-100">
       <div class="col-12 col-lg-9 col-xl-7">
         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
           <div class="card-body p-4 p-md-5">
-            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Форма регистрации</h3>
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="csrf">
               <div class="row">
                 <div class="col-md-6 mb-4">
 
                   <div data-mdb-input-init class="form-outline">
                     <input required type="text" id="firstName" class="only-letters form-control form-control-lg" />
-                    <label class="form-label" for="firstName">First Name</label>
+                    <label class="form-label" for="firstName">Имя</label>
                   </div>
 
                 </div>
@@ -65,7 +61,7 @@
 
                   <div data-mdb-input-init class="form-outline">
                     <input required type="text" id="lastName" class="only-letters form-control form-control-lg" />
-                    <label class="form-label" for="lastName">Last Name</label>
+                    <label class="form-label" for="lastName">Фамилия</label>
                   </div>
 
                 </div>
@@ -76,7 +72,7 @@
 
                   <div data-mdb-input-init class="form-outline">
                     <input required type="email" id="emailAddress" class="form-control form-control-lg" />
-                    <label class="form-label" for="emailAddress">Email</label>
+                    <label class="form-label" for="emailAddress">Электронная почта</label>
                   </div>
 
                 </div>
@@ -87,7 +83,7 @@
 
                   <div data-mdb-input-init class="form-outline">
                     <input required type="tel" placeholder="+7(___) ___-__-__" maxlength="18" id="phone" class="form-control form-control-lg" />
-                    <label class="form-label" for="phone">Phone Number</label>
+                    <label class="form-label" for="phone">Номер телефона</label>
                   </div>
 
                 </div>
@@ -95,14 +91,14 @@
             <div class="row">
                 <div class="col-md-6 mb-4">
                   <div data-mdb-input-init class="form-outline">
-                    <input required type="password" placeholder="МИН: 8 char" id="pass" class="form-control form-control-lg" />
-                    <label class="form-label" for="pass">Password</label>
+                    <input required type="password" placeholder="МИН: 8 символов" id="pass" class="form-control form-control-lg" />
+                    <label class="form-label" for="pass">Пароль</label>
                   </div>
                 </div>
                 <div class="col-md-6 mb-4">
                   <div data-mdb-input-init class="form-outline">
-                    <input required type="password"  placeholder="МИН: 8 char" id="rPass" class="form-control form-control-lg" />
-                    <label class="form-label" for="rPass">Repeat Password</label>
+                    <input required type="password"  placeholder="МИН: 8 символов" id="rPass" class="form-control form-control-lg" />
+                    <label class="form-label" for="rPass">Повторите пароль</label>
                   </div>
                 </div>
        
@@ -113,7 +109,7 @@
 
                   <div data-mdb-input-init class="form-outline">
                     <input  maxlength="6" required type="text" id="post" class="form-control form-control-lg" />
-                    <label class="form-label" for="post">Postal</label>
+                    <label class="form-label" for="post">Почтовый индекс</label>
                   </div>
 
                 </div>
@@ -121,7 +117,7 @@
 
                   <div data-mdb-input-init class="form-outline">
                     <input required type="text" id="city" class="only-letters form-control form-control-lg" />
-                    <label class=" form-label" for="city">City</label>
+                    <label class=" form-label" for="city">Город</label>
                   </div>
 
                 </div>
@@ -131,7 +127,7 @@
 
                   <div data-mdb-input-init class="form-outline">
                     <input required type="tel" id="address" class="only-cyrillic-and-digits form-control form-control-lg" />
-                    <label class=" form-label" for="address">Address</label>
+                    <label class=" form-label" for="address">Адрес</label>
                   </div>
 
                 </div>
@@ -139,7 +135,7 @@
              
 
               <div class="mt-4 pt-2">
-                <button onclick="register()" id="submit">Submit</button>
+                <button onclick="register()" id="submit">Отправить</button>
               </div>
 
           </div>
@@ -148,16 +144,14 @@
     </div>
   </div>
 </section>
-    <!-- Register End -->
 
 
-<!-- Modal -->
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLongTitle">Заголовок модального окна</h5>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Закрыть">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -168,13 +162,12 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="wrongPassModal" tabindex="-1" role="dialog" aria-labelledby="wrongPassModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="wrongPassModalTitle">Wronf title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="wrongPassModalTitle">Неверный заголовок</h5>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Закрыть">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -185,12 +178,11 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
 <div class="modal fade" id="existsUserModal" tabindex="-1" role="dialog" aria-labelledby="existsUserModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="existsUserModalTitle">Wronf title</h5>
+        <h5 class="modal-title" id="existsUserModalTitle">Неверный заголовок</h5>
       
       </div>
       <div class="modal-body">
@@ -216,7 +208,6 @@
     }
 
     $(document).ready(function () {
-        // post validator
         $('#post').on('input', function () {
             let value = $(this).val();
         
@@ -228,7 +219,6 @@
         
             $(this).val(value);
         });
-        // phone validator
         var phone = $('#phone');
 
         if (!phone.val() || !phone.val().match(/^\+7/)) {
@@ -240,7 +230,7 @@
 
             var digits = val.replace(/\D/g, '').replace(/^7/, '');
 
-            digits = digits.substring(0, 10); // Max 10 hane
+            digits = digits.substring(0, 10); 
 
             var formatted = '+7 ';
             if (digits.length > 0) formatted += '(' + digits.substring(0, 3);
@@ -268,7 +258,6 @@
                 $(this).val('+7 ');
             }
         });
-        // NAME VALIDATOR
         $(function () {
             $('.only-letters').each(function () {
                 this.addEventListener('input', function () {

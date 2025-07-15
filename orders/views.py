@@ -3,9 +3,8 @@ from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from datetime import datetime
-from account.models import BasketItem  
 from datetime import datetime, timedelta
+from account.models import BasketItem  
 import random
 
 @login_required
@@ -14,7 +13,7 @@ def checkout_view(request):
     products = BasketItem.objects.filter(basket__user=user)
     
     subtotal = sum(item.total_price for item in products)
-    shipping = 10  # you can make this dynamic if you want
+    shipping = 10 
     total = subtotal + shipping
 
     if request.method == 'POST':
@@ -38,25 +37,23 @@ def checkout_view(request):
             'current_year': datetime.now().year,
         }
 
-        # Render email content
         html_content = render_to_string('checkout_email.html', context)
         text_content = f"""
-Thank you for your order!
+Спасибо за ваш заказ!
 
-Order Number: {order_number}
-Name: {full_name}
-Address: {address}, {city}
-Phone: {phone}
+Номер заказа: {order_number}
+Имя: {full_name}
+Адрес: {address}, {city}
+Телефон: {phone}
 
-Order Details:
+Детали заказа:
 """
         for item in products:
             text_content += f"- {item.product.title} x{item.quantity} = {item.total_price} ₼\n"
-        text_content += f"\nSubtotal: {subtotal} ₼\nShipping: {shipping} ₼\nTotal: {total} ₼"
+        text_content += f"\nПромежуточный итог: {subtotal} ₼\nДоставка: {shipping} ₼\nИтого: {total} ₼"
 
-        # Send email
         email = EmailMultiAlternatives(
-            subject='Order Confirmation',
+            subject='Подтверждение заказа',
             body=text_content,
             from_email='noreply@yourshop.com',
             to=[user.email],
@@ -64,10 +61,6 @@ Order Details:
         email.attach_alternative(html_content, "text/html")
         email.send()
 
-
-        # Save order summary in session for thank you page
-        # Serialize products for session (list of dicts)
-        # Serialize products for session (list of dicts)
         products_serialized = []
         for item in products:
             products_serialized.append({
@@ -77,10 +70,8 @@ Order Details:
                 'total_price': item.total_price,
             })
 
-    # Clear basket items
         products.delete()
 
-        # Save only serializable data to session
         request.session['order_summary'] = {
             'order_number': order_number,
             'full_name': full_name,
@@ -104,7 +95,6 @@ Order Details:
     })
 
 
-
 def order_complete_view(request):
     summary = request.session.pop('order_summary', {})
     print(summary)
@@ -112,15 +102,14 @@ def order_complete_view(request):
 
 
 FAKE_STATUSES = [
-    "Order received",
-    "Preparing for shipment",
-    "Shipped from warehouse",
-    "In transit",
-    "Out for delivery",
-    "Delivered",
-    "Returned",
+    "Заказ получен",
+    "Подготовка к отправке",
+    "Отправлен со склада",
+    "В пути",
+    "Доставляется",
+    "Доставлен",
+    "Возвращен",
 ]
-
 
 
 def track_order_view(request):
@@ -131,9 +120,8 @@ def track_order_view(request):
     if request.method == 'POST':
         order_number = request.POST.get('order_number')
         if order_number:
-            # Fake simulation; replace with DB logic if needed
-            stage = random.randint(1, 3)
-            expected = (datetime.now() + timedelta(days=3)).strftime('%A, %B %d')
+            stage = 1
+            expected = (datetime.now() + timedelta(days=3)).strftime('%A, %d %B')  
 
     return render(request, 'track_order.html', {
         'order_number': order_number,

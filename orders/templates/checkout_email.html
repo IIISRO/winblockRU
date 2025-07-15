@@ -1,34 +1,75 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-    .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 5px; }
-    h2 { color: #2c3e50;font-size: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #3498db; color: white; }
-    .total { font-weight: bold; }
-    .footer { margin-top: 30px; font-size: 12px; color: #888; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      font-size: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .total {
+      font-weight: bold;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #888;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
-    <h2>Order Receipt</h2>
-    <p style="font-size: 18px;">Thank you for your order!</p>
-    <p><strong>Order Number:</strong> {{ order_number }}</p>
-    <p><strong>Name:</strong> {{ full_name }}</p>
-    <p><strong>Address:</strong> {{ address }}, {{ city }}</p>
-    <p><strong>Phone:</strong> {{ phone }}</p>
+    <h2>Квитанция о заказе</h2>
+    <p style="font-size: 18px;">Спасибо за ваш заказ!</p>
+    <p><strong>Номер заказа:</strong> {{ order_number }}</p>
+    <p><strong>Имя:</strong> {{ full_name }}</p>
+    <p><strong>Адрес:</strong> {{ address }}, {{ city }}</p>
+    <p><strong>Телефон:</strong> {{ phone }}</p>
 
-    <h3>Order Details:</h3>
+    <h3>Детали заказа:</h3>
     <table>
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Price (₼)</th>
-          <th>Total (₼)</th>
+          <th>Продукт</th>
+          <th>Количество</th>
+          <th>Цена (₼)</th>
+          <th>Итого (₼)</th>
         </tr>
       </thead>
       <tbody>
@@ -43,12 +84,13 @@
       </tbody>
     </table>
 
-    <p class="total">Subtotal: {{ subtotal }} ₼</p>
-    <p class="total">Shipping: {{ shipping }} ₼</p>
-    <p class="total">Total: {{ total }} ₼</p>
+    <p class="total">Промежуточный итог: {{ subtotal }} ₼</p>
+    <p class="total">Доставка: {{ shipping }} ₼</p>
+    <p class="total">Общая сумма: {{ total }} ₼</p>
 
-    <p>If you have any questions, feel free to contact us.</p>
-    <div class="footer">© {{ current_year }} Your Company Name. All rights reserved.</div>
+    <p>Если у вас есть вопросы, не стесняйтесь связаться с нами.</p>
+    <div class="footer">© {{ current_year }} Ваша компания. Все права защищены.</div>
   </div>
 </body>
+
 </html>
