@@ -45,8 +45,8 @@ services:
     volumes:
       - ./static/:/code/static/
       - ./media/:/code/media/
-    #   - ./ssl_certificate.crt:/code/ssl_certificate.crt
-    #   - ./ssl_certificate.key:/code/ssl_certificate.key
+      - ./ssl_certificate.crt:/code/ssl_certificate.crt
+      - ./ssl_certificate.key:/code/ssl_certificate.key
     depends_on:
       - web
     

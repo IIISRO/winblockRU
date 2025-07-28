@@ -63,43 +63,43 @@ MIDDLEWARE = [
 ]
 
 
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-# # CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOWED_ORIGINS = [
-#     "https://storeglasstech.az",
-#     "https://www.storeglasstech.az",
-# ]
-# CORS_ALLOW_METHODS = [
-#     "DELETE",
-#     "GET",
-#     "OPTIONS",
-#     "PATCH",
-#     "POST",
-#     "PUT",
-# ]
-# CORS_ALLOW_HEADERS = [
-#     "accept",
-#     "accept-encoding",
-#     "authorization",
-#     "content-type",
-#     "dnt",
-#     "origin",
-#     "user-agent",
-#     "x-csrftoken",
-#     "x-requested-with",
-# ]
-# CSRF_TRUSTED_ORIGINS = [ 
-#     "https://storeglasstech.az",
-#     "https://www.storeglasstech.az",
-#     ]
-# ALLOWED_ORIGINS = [ 
-#     "https://storeglasstech.az",
-#     "https://www.storeglasstech.az",
-#     ]
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://winblock.com.ru",
+    "https://www.winblock.com.ru",
+]
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+CSRF_TRUSTED_ORIGINS = [ 
+    "https://winblock.com.ru",
+    "https://www.winblock.com.ru",
+    ]
+ALLOWED_ORIGINS = [ 
+    "https://winblock.com.ru",
+    "https://www.winblock.com.ru",
+    ]
 
-# CSRF_COOKIE_HTTPONLY = True
-# CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = True
 
 
 ROOT_URLCONF = 'winblockRU.urls'
